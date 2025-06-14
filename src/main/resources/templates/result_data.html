@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title  data-th-text="${studentName} +'- Mark Sheet'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6 min-h-screen flex items-center justify-center">
+
+<div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-blue-600">Smart Result</h1>
+        <p class="text-gray-600 text-lg">Student Mark Sheet</p>
+        <hr class="mt-4 border-gray-300" />
+    </div>
+
+    <!-- Student Details -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-gray-800">
+        <div><span
+                th:text="'Name: ' + ${studentName}"
+                class="font-semibold"></span> </div>
+        <div><span class="font-semibold"
+                   th:text="'Roll No: ' + ${studentRollNo}"
+        ></span> </div>
+        <div><span class="font-semibold"
+            th:text="'Email: '+${studentEmail}"
+        ></span></div>
+        <div><span class="font-semibold"
+            th:text="'School Name: '+${studentSchool}"
+        ></span> </div>
+        <div><span class="font-semibold"
+                   th:text="'Date of Birth: '+${studentDob}"
+        ></span></div>
+        <div><span class="font-semibold"
+                   th:text="'Date of Birth: '+${studentGender}"
+        ></span> </div>
+    </div>
+
+    <!-- Subject-wise Marks Table -->
+    <div class="overflow-x-auto">
+        <table class="table-auto w-full">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2">Subject</th>
+                <th class="px-4 py-2">Marks</th>
+                <th class="px-4 py-2">Max Marks</th>
+                <th class="px-4 py-2">Grade</th>
+                <th class="px-4 py-2">Remark</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="mark : ${studentMarkList}" class="bg-white border-b">
+                <td class="px-4 py-2" th:text="${mark.subject}"></td>
+                <td class="px-4 py-2" th:text="${mark.marks}"></td>
+                <td class="px-4 py-2" th:text="${mark.maxMarks}"></td>
+                <td class="px-4 py-2" th:text="${mark.grade}"></td>
+                <td class="px-4 py-2" th:text="${mark.remark}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Result Summary -->
+    <div class="mt-8 bg-gray-100 p-6 rounded-lg shadow-inner">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-gray-800">
+            <div>
+                <p class="font-semibold text-lg">Total Marks</p>
+                <p class="text-blue-600 text-xl font-bold"
+                   th:text="${totalMarks} + ' / ' + ${maxTotalMarks}"></p>
+            </div>
+            <div>
+                <p class="font-semibold text-lg">Percentage</p>
+                <p class="text-blue-600 text-xl font-bold"
+                   th:text="${percentage} + '%'"></p>
+
+            </div>
+            <div>
+                <p class="font-semibold text-lg">Overall Grade</p>
+                <p th:class="${(overallGrade == 'F') ? 'text-red-700' : 'text-green-700'}" class="text-blue-600 text-xl font-bold" th:text="${overallGrade}"> </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Note -->
+    <div class="mt-6 text-center text-green-700 font-medium"
+         th:text="${feedbackMessage}">
+    </div>
+    <div class="mt-6 text-center text-green-700 font-medium">
+    <a th:href="@{'/results/rollno'}" class="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition">
+        View Another Result
+    </a>
+    <button onclick="getPrintout()" class="inline-block mt-4 bg-green-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition">
+        Print
+    </button>
+</div>
+</div>
+<script>
+
+    function getPrintout(){
+
+    window.print();
+    }
+
+</script>
+</body>
+</html>

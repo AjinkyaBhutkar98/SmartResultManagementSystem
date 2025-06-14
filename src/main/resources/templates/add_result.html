@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin - Add Student Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 py-10 px-4 min-h-screen">
+
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold text-blue-600 mb-6 text-center">Add Student Result</h1>
+
+    <form
+            th:action="@{'/results/process-form'}"
+            th:object="${studentForm}"
+            method="post"
+            id="studentForm" class="space-y-6">
+
+        <!-- Student Information -->
+        <div>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Student Information</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <input type="text"
+                       name="name"
+                       th:field="*{name}"
+                       placeholder="Full Name" required class="input" />
+                <input type="text"
+                       name="rollNo"
+                       th:field="*{rollNo}"
+                       placeholder="Roll No" required class="input" />
+                <input type="email"
+                       name="emailAddress"
+                       th:field="*{emailAddress}"
+                       placeholder="Email Address" required class="input" />
+                <input type="text"
+                       name="schoolName"
+                       th:field="*{schoolName}"
+                       placeholder="School Name" class="input" />
+                <input type="date"
+                       name="dob"
+                       th:field="*{dob}"
+                       placeholder="Date of Birth" required class="input" />
+                <select name="gender"
+                        th:field="*{gender}"
+                        required class="input">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Subject Marks -->
+        <div>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Subject Marks</h2>
+            <div class="space-y-4 marks_field_container" id="marks_field_container">
+                <!-- Repeat for each subject -->
+                <div class="grid md:grid-cols-6 gap-4" id="marks_field_0">
+                    <input type="text" name="marksFormList[0].subject" placeholder="Subject Name" class="input" required />
+                    <input type="number" name="marksFormList[0].marks"placeholder="Marks" min="0" max="100" class="input" required />
+                    <input type="number" name="marksFormList[0].maxMarks" placeholder="Max Marks" class="input" value="100" required />
+                    <input type="text" name="marksFormList[0].remark" placeholder="Remark" class="input" />
+                    <input type="text" name="marksFormList[0].grade" placeholder="Grade" maxlength="2" class="input" />
+
+                    <button type="button" onclick=""
+                            class="bg-red-600 disabled:bg-yellow-900 hover:bg-red-700 text-white font-semibold px-3 py-2 rounded-lg shadow">
+                        Remove
+                    </button>
+                </div>
+
+                <div class="grid md:grid-cols-6 gap-4" id="marks_field_1">
+                    <input type="text" name="marksFormList[1].subject" placeholder="Subject Name" class="input" required />
+                    <input type="number" name="marksFormList[1].marks"placeholder="Marks" min="0" max="100" class="input" required />
+                    <input type="number" name="marksFormList[1].maxMarks" placeholder="Max Marks" class="input" value="100" required />
+                    <input type="text" name="marksFormList[1].remark" placeholder="Remark" class="input" />
+                    <input type="text" name="marksFormList[1].grade" placeholder="Grade" maxlength="2" class="input" />
+                    <button type="button" onclick=""
+                            class="bg-red-600 disabled:bg-yellow-900 hover:bg-red-700 text-white font-semibold px-3 py-2 rounded-lg shadow">
+                        Remove
+                    </button>
+                </div>
+
+
+
+
+        </div>
+
+            <div class="flex justify-center items-center my-5">
+                <button type="button" id="addSubjectBtn" onclick="addSubject()"
+                        class="text-black bg-orange-700 px-3 py-2 rounded hover:bg-orange-800 transition">
+                    Add Subject
+                </button>
+            </div>
+        <!-- Submit -->
+        <div class="text-center mt-6">
+            <button type="submit" class="bg-blue-600  hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow">
+                Submit Result
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .input {
+      @apply border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+    }
+</style>
+<script>
+
+    let index=2;
+
+ function addSubject(){
+
+console.log("adding row");
+
+ const container=document.getElementById('marks_field_container');
+
+   const newRow = `
+        <div class="grid md:grid-cols-6 gap-4" id="marks_field_${index}">
+            <input type="text" name="marksFormList[${index}].subject" placeholder="Subject Name" class="input" required />
+            <input type="number" name="marksFormList[${index}].marks" placeholder="Marks" min="0" max="100" class="input" required />
+            <input type="number" name="marksFormList[${index}].maxMarks" placeholder="Max Marks" class="input" value="100" required />
+            <input type="text" name="marksFormList[${index}].remark" placeholder="Remark" class="input" />
+            <input type="text" name="marksFormList[${index}].grade" placeholder="Grade" maxlength="2" class="input" />
+            <button type="button" onclick="removeSubject('marks_field_${index}')"
+                            class="bg-red-600 hover:bg-red-700 text-white font-semibold px-3 py-2 rounded-lg shadow">
+                        Remove
+                    </button>
+        </div>
+    `;
+
+    container.insertAdjacentHTML('beforeend', newRow);
+
+    if (index > 0) {
+        const previousRow = document.getElementById(`marks_field_${index - 1}`);
+        if (previousRow) {
+            const button = previousRow.querySelector("button");
+            if (button) button.disabled = true;
+        }
+    }
+
+    index++;
+
+ }
+
+    function removeSubject(divId) {
+    const div = document.getElementById(divId);
+    if (div) {
+        div.parentNode.removeChild(div);
+    }
+
+    // Get the container and remaining rows
+    const container = document.getElementById('marks_field_container');
+    const allRows = container.querySelectorAll("div[id^='marks_field_']");
+
+    // Update the global index to match the new count
+    index = allRows.length;
+
+    // Enable remove button on the last row (if any)
+    if (index > 0) {
+        const lastRow = allRows[index - 1];
+        const button = lastRow.querySelector("button");
+        if (button) button.disabled = false;
+    }
+}
+
+
+</script>
+</body>
+</html>
