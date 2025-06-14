@@ -13,12 +13,8 @@ Spring Data JPA (Hibernate) – ORM for database interaction
 
 Thymeleaf  – Server-side templating engine
 
-H2 / MySQL – Database (in-memory or persistent)
-
 Tailwind CSS / Bootstrap – Responsive front-end styling
 
-JavaScript – Dynamic form rendering and validation
 
-Maven / Gradle – Build and dependency management
 
-Lombok (optional) – Reduces boilerplate in model classes
+
