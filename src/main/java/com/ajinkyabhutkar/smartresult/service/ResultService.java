@@ -20,6 +20,7 @@ public class ResultService {
 
         Student student=new Student();
 
+
         student.setName(studentForm.getName());
         student.setRollNo(studentForm.getRollNo());
         student.setDob(studentForm.getDob());
